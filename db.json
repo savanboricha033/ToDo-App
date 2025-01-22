@@ -1,0 +1,24 @@
+{
+  "tasks": [
+    {
+      "id": "8f89",
+      "text": "do python",
+      "completed": false
+    },
+    {
+      "id": "5658",
+      "text": "do javascript",
+      "completed": true
+    },
+    {
+      "id": "e660",
+      "text": "do some DSA",
+      "completed": false
+    },
+    {
+      "id": "80cb",
+      "text": "OOP Revision",
+      "completed": false
+    }
+  ]
+}
