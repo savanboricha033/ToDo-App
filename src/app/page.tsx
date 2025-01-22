@@ -6,16 +6,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
+// Define types for tasks
+interface Task {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
 export default function Home() {
-  const [inputText, setInputText] = useState("");
-  const [todoList, setTodoList] = useState([]);
-  const [filter, setFilter] = useState("all");
+  const [inputText, setInputText] = useState<string>("");
+  const [todoList, setTodoList] = useState<Task[]>([]);
+  const [filter, setFilter] = useState<"all" | "remaining" | "completed">("all");
 
   const fetchTasks = async () => {
     try {
       const response = await fetch("http://localhost:3001/tasks");
       if (!response.ok) throw new Error(`Error fetching tasks: ${response.status}`);
-      const data = await response.json();
+      const data: Task[] = await response.json();
       setTodoList(data);
     } catch (err) {
       if (err instanceof Error) {
@@ -26,7 +33,7 @@ export default function Home() {
     }
   };
 
-  const addTask = async (text) => {
+  const addTask = async (text: string): Promise<void> => {
     if (!text) return;
     try {
       const response = await fetch("http://localhost:3001/tasks", {
@@ -35,7 +42,7 @@ export default function Home() {
         body: JSON.stringify({ text, completed: false }),
       });
       if (!response.ok) throw new Error(`Error adding task: ${response.status}`);
-      const newTask = await response.json();
+      const newTask: Task = await response.json();
       setTodoList((prev) => [...prev, newTask]);
       setInputText("");
     } catch (err) {
@@ -47,7 +54,7 @@ export default function Home() {
     }
   };
 
-  const deleteTask = async (id) => {
+  const deleteTask = async (id: number): Promise<void> => {
     try {
       const response = await fetch(`http://localhost:3001/tasks/${id}`, {
         method: "DELETE",
@@ -63,7 +70,7 @@ export default function Home() {
     }
   };
 
-  const toggleComplete = async (task) => {
+  const toggleComplete = async (task: Task): Promise<void> => {
     try {
       const updatedTask = { ...task, completed: !task.completed };
       const response = await fetch(`http://localhost:3001/tasks/${task.id}`, {
@@ -84,7 +91,7 @@ export default function Home() {
     }
   };
 
-  const getFilteredTasks = () => {
+  const getFilteredTasks = (): Task[] => {
     switch (filter) {
       case "remaining":
         return todoList.filter((task) => !task.completed);
@@ -135,9 +142,7 @@ export default function Home() {
                 />
                 <Label
                   htmlFor={`checkbox-${task.id}`}
-                  className={`flex-1 ${
-                    task.completed ? "line-through" : ""
-                  }`}
+                  className={`flex-1 ${task.completed ? "line-through" : ""}`}
                 >
                   {task.text}
                 </Label>
