@@ -18,7 +18,11 @@ export default function Home() {
       const data = await response.json();
       setTodoList(data);
     } catch (err) {
-      console.error("Failed to fetch tasks:", err.message);
+      if (err instanceof Error) {
+        console.error("Failed to fetch tasks:", err.message);
+      } else {
+        console.error("Failed to fetch tasks:", err);
+      }
     }
   };
 
@@ -35,7 +39,11 @@ export default function Home() {
       setTodoList((prev) => [...prev, newTask]);
       setInputText("");
     } catch (err) {
-      console.error("Failed to add task:", err.message);
+      if (err instanceof Error) {
+        console.error("Failed to add task:", err.message);
+      } else {
+        console.error("Failed to add task:", err);
+      }
     }
   };
 
@@ -47,7 +55,11 @@ export default function Home() {
       if (!response.ok) throw new Error(`Error deleting task: ${response.status}`);
       setTodoList((prev) => prev.filter((task) => task.id !== id));
     } catch (err) {
-      console.error("Failed to delete task:", err.message);
+      if (err instanceof Error) {
+        console.error("Failed to delete task:", err.message);
+      } else {
+        console.error("Failed to delete task:", err);
+      }
     }
   };
 
@@ -64,7 +76,11 @@ export default function Home() {
         prev.map((t) => (t.id === task.id ? updatedTask : t))
       );
     } catch (err) {
-      console.error("Failed to update task:", err.message);
+      if (err instanceof Error) {
+        console.error("Failed to update task:", err.message);
+      } else {
+        console.error("Failed to update task:", err);
+      }
     }
   };
 
